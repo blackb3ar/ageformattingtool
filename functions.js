@@ -62,10 +62,21 @@ $(document).ready(function(){
     }
 
     function getFactorialFormat(secs) {
-        //format: yy (+ 1 if number is odd) mm (+1 if number is odd)
-        //var d = Math.round(secs/(1000*60*60*24));
-        //var y = Math.floor(d/365);
+        var d = Math.round(secs/(1000*60*60*24));
+        var y = Math.floor(d/365);
+        var y_tmp = getBiggestFactorial(y);
+        var str1 = ' years and ';
+        var str2 = ' days';
+        var y_str = y_tmp[0].toString() + '! (+' + y_tmp[1].toString() + ')';
+        if((d % 365) > 0) {
+            var d_rem = d % 365;
+            var d_rem_tmp = getBiggestFactorial(d_rem);
 
+            return (y_str + str1 + d_rem_tmp[0].toString() + '! (+' + d_rem_tmp[1].toString() + ') days');
+        }
+        else {
+            return (y_str + ' years');
+        }
     }
 
     function getDaysFormat(secs) {
@@ -91,7 +102,13 @@ $(document).ready(function(){
 
     function getBiggestFactorial(nbr) {
         var factorial = [1, 2, 6, 24, 120, 720];
-
+        var retval = 1;
+        for(var i = 0; i<factorial.length; i++) {
+            if(nbr >= factorial[i]) {
+                retval = i;
+            }
+        }
+        return [(retval+1), factorial[retval]];
     }
 
     function getSecDiff(inp_date) {
